@@ -35,6 +35,7 @@ class _WeekViewState extends State<WeekView> {
   void initState() {
     super.initState();
     extraDataMap = widget.configuration.extraDataMap;
+
     items = DateUtil.initCalendarForWeekView(
         widget.year, widget.month, widget.firstDayOfWeek.getDateTime(), 0,
         minSelectDate: widget.configuration.minSelectDate,
@@ -65,43 +66,48 @@ class _WeekViewState extends State<WeekView> {
 
     CalendarConfiguration configuration =
         calendarProvider.calendarConfiguration;
-    return new GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 7, mainAxisSpacing: 10),
-        itemCount: 7,
-        itemBuilder: (context, index) {
-          DateModel dateModel = items[index];
-          //判断是否被选择
-          switch (configuration.selectMode) {
-            case CalendarSelectedMode.multiSelect:
-              if (calendarProvider.selectedDateList.contains(dateModel)) {
-                dateModel.isSelected = true;
-              } else {
-                dateModel.isSelected = false;
+    print(
+        "WeekView Consumer:calendarProvider.selectDateModel:${calendarProvider.selectDateModel}");
+    return MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: new GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 7, mainAxisSpacing: 10),
+            itemCount: 7,
+            itemBuilder: (context, index) {
+              DateModel dateModel = items[index];
+              //判断是否被选择
+              switch (configuration.selectMode) {
+                case CalendarSelectedMode.multiSelect:
+                  if (calendarProvider.selectedDateList.contains(dateModel)) {
+                    dateModel.isSelected = true;
+                  } else {
+                    dateModel.isSelected = false;
+                  }
+                  break;
+                case CalendarSelectedMode.singleSelect:
+                  if (calendarProvider.selectDateModel == dateModel) {
+                    dateModel.isSelected = true;
+                  } else {
+                    dateModel.isSelected = false;
+                  }
+                  break;
+                case CalendarSelectedMode.mutltiStartToEndSelect:
+                  if (calendarProvider.selectedDateList.contains(dateModel)) {
+                    dateModel.isSelected = true;
+                  } else {
+                    dateModel.isSelected = false;
+                  }
+                  break;
               }
-              break;
-            case CalendarSelectedMode.singleSelect:
-              if (calendarProvider.selectDateModel == dateModel) {
-                dateModel.isSelected = true;
-              } else {
-                dateModel.isSelected = false;
-              }
-              break;
-            case CalendarSelectedMode.mutltiStartToEndSelect:
-              if (calendarProvider.selectedDateList.contains(dateModel)) {
-                dateModel.isSelected = true;
-              } else {
-                dateModel.isSelected = false;
-              }
-              break;
-          }
 
-          return ItemContainer(
-              dateModel: dateModel,
-              clickCall: () {
-                setState(() {});
-              });
-        });
+              return ItemContainer(
+                  dateModel: dateModel,
+                  clickCall: () {
+                    setState(() {});
+                  });
+            }));
   }
 }
