@@ -209,7 +209,7 @@ class CalendarContainerState extends State<CalendarContainer>
            */
           calendarProvider.calendarConfiguration.weekBarItemWidgetBuilder(),
           AnimatedContainer(
-              duration: Duration(milliseconds: 500),
+              duration: Duration(milliseconds: 300),
               height: expand ? totalHeight : itemHeight,
               child: IndexedStack(
                 index: index,
