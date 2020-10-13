@@ -380,7 +380,7 @@ class CalendarController {
             .jumpToPage(targetPage);
       }
     } else {
-      DateModel dateModel = DateModel.fromDateTime(DateTime(year, month, 1));
+      DateModel dateModel = DateModel.fromDateTime(DateTime(year, month, day));
       //计算目标索引
       int targetPage = 0;
       for (int i = 0; i < weekList.length - 1; i++) {
@@ -388,7 +388,7 @@ class CalendarController {
         DateModel next = weekList[i + 1];
         if (!first.isAfter(dateModel) && next.isAfter(dateModel)) {
           targetPage = i;
-          return;
+       
         }
       }
       if (calendarProvider.calendarConfiguration.weekController.hasClients ==
@@ -573,7 +573,7 @@ bool defaultInRange(DateModel dateModel) {
 /**
  * 周视图切换
  */
-typedef void OnWeekChange(int year, int month);
+typedef void OnWeekChange(DateModel dateModel);
 
 /**
  * 月份切换事件
